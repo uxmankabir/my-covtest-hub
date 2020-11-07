@@ -1,0 +1,15 @@
+<!--Main Navigation-->
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary scrolling-navbar">
+  <div class="container">
+    <span class="navbar-brand">Dashboard</span>
+    <span class="navbar-text white-text">
+      <%= current_admin.username %>! <%= link_to 'Logout', logout_path, method: :delete, class: 'btn btn-link btn-md text-white ml-auto' %>
+    </span>
+  </div>
+</nav>
+<!--Main Navigation-->
+<br><br><br><br><br>
+<div class="container">
+  <%= render 'shared/errors' %>
+  
+</div>
