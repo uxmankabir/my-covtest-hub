@@ -13,3 +13,32 @@
  *= require_tree .
  *= require_self
  */
+
+ html,
+body,
+header,
+.view {
+  height: 100%;
+}
+
+@media (max-width: 740px) {
+  html,
+  body,
+  header,
+  .view {
+    height: 100vh;
+  }
+}
+
+h1 {
+  letter-spacing: 8px;
+}
+
+h5 {
+  letter-spacing: 3px;
+}
+
+.hr-light {
+  border-top: 3px solid #fff;
+  width: 80px;
+}
