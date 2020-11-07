@@ -1,0 +1,42 @@
+<!-- Full Page Intro -->
+<div class="view" style="background-image: url('https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/rm208-jj-14_1_1.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=193dc4e4a71b2b7e41173e527347ffc3'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
+  <!-- Mask & flexbox options-->
+  <div class="mask rgba-black-light align-items-center d-flex">
+    <!-- Content -->
+    <div class="container">
+      <!--Grid row-->
+      <div class="row">
+        <!--Grid column-->
+        <div class="col-sm-12 col-md-8 col-lg-6 mx-auto mb-4 text-center">
+          <!-- News jumbotron -->
+          <div class="jumbotron text-center hoverable p-4">
+            <img src="https://cahsi.utep.edu/wp-content/uploads/kisspng-computer-icons-user-clip-art-user-5abf13db5624e4.1771742215224718993529.png" height="150" class="mx-auto">
+
+            <%= form_with(model: Admin.new, url: login_path, class: 'mx-lg-5', local: true) do |f|%>
+              <div class="md-form">
+                <%= f.text_field :username, class: 'form-control', required: true %>
+                <%= f.label :username %>
+              </div>
+
+              <div class="md-form">
+                <%= f.password_field :password, class: 'form-control', required: true %>
+                <%= f.label :password %>
+              </div>
+              
+              <%= f.submit "Login", class: 'btn btn-primary'%>
+            <% end %>
+
+            <%= render 'shared/errors'%>
+
+          </div>
+          <!-- News jumbotron -->
+        </div>
+        <!--Grid column-->
+      </div>
+      <!--Grid row-->
+    </div>
+    <!-- Content -->
+  </div>
+  <!-- Mask & flexbox options-->
+</div>
+<!-- Full Page Intro -->
