@@ -6,5 +6,10 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
 
   resources :admins, only: [:index]
+  resources :test_results, only: [:index, :new, :create] do
+    collection do
+      get :ttn_code
+    end
+  end
 
 end
