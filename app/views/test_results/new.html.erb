@@ -1,100 +1,109 @@
-<!-- Full Page Intro -->
-<div class="view" style="background-image: url('https://1.bp.blogspot.com/-U8v7W54WQSE/X1viBuMs7sI/AAAAAAAAHW8/v5gElP0j_ZUwxFGPsgZuvI6Xr0Czh2z6gCLcBGAsYHQ/s16000/backgrounds-powerpoint-44.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center center;">
-  <!-- Mask & flexbox options-->
-  <div class="mask rgba-black-light align-items-center d-flex">
-    <!-- Content -->
-    <div class="container">
-      <!--Grid row-->
-      <div class="row">
-        <!--Grid column-->
-        <div class="col-sm-12 col-md-8 col-lg-6 mx-auto mb-4">
-          <!-- News jumbotron -->
-          <div class="jumbotron hoverable p-4">
+<!-- Content -->
+<br><br><br>
+<div class="container">
+  <!--Grid row-->
+  <div class="row">
+    <!--Grid column-->
+    <div class="col-sm-12 col-md-10 col-lg-8 mx-auto">
+      <!-- News jumbotron -->
+      <div class="jumbotron hoverable p-4">
 
-            <%= form_with(model: @test_result, url: test_results_path, class: 'mx-lg-5', local: true) do |f|%>
-              <div class="md-form">
-                <%= f.email_field :email, class: 'form-control', required: true %>
-                <%= f.label :email %>
-              </div>
+        <h1 class="text-center">Test Result Details</h1>
 
-              <div class="md-form">
-                <%= f.text_field :full_name, class: 'form-control', required: true %>
-                <%= f.label :full_name, "Full Name" %>
-              </div>
+        <%= form_with(model: @test_result, url: test_results_path, class: 'mx-lg-5', local: true) do |f|%>
+          <div class="md-form">
+            <%= f.email_field :email, class: 'form-control', required: true %>
+            <%= f.label :email %>
+          </div>
 
-              <div class="md-form">
-                <%= f.number_field :age, class: 'form-control', min: '1', required: true %>
-                <%= f.label :age %>
-              </div>
-              
-              <div class="md-form">
-                <%= f.text_field :address, class: 'form-control', required: true %>
-                <%= f.label :address %>
-              </div>
-              
-              <div class="md-form">
+          <div class="md-form">
+            <%= f.text_field :full_name, class: 'form-control', required: true %>
+            <%= f.label :full_name, "Full Name" %>
+          </div>
+
+          <div class="md-form">
+            <%= f.number_field :age, class: 'form-control', min: '1', required: true %>
+            <%= f.label :age %>
+          </div>
+          
+          <div class="md-form">
+            <%= f.text_field :address, class: 'form-control', required: true %>
+            <%= f.label :address %>
+          </div>
+
+          <!-- Grid row -->
+          <div class="form-row">
+            <!-- Grid column -->
+            <div class="col-sm-12 col-md-6">
+              <!-- Material input -->
+              <div class="md-form mt-0">
                 <%= f.text_field :post_code, class: 'form-control', required: true %>
                 <%= f.label :post_code, "Post Code" %>
               </div>
+            </div>
+            <!-- Grid column -->
 
-              <div class="md-form">
+            <!-- Grid column -->
+            <div class="col-sm-12 col-md-6">
+              <!-- Material input -->
+              <div class="md-form mt-0">
                 <input type="text" id="ttn_code" name="ttn_code" class="form-control" required autocomplete="off">
                 <label for="ttn_code">TTN Code</label>
                 <small id="ttn-code-error" class="form-text text-muted"></small>
               </div>
-
-              <div class="mb-3">
-                <div> Select your gender </div>
-                <label class="mr-4">
-                  <%= f.radio_button :gender, :male, class: 'option-input radio', required: true %>
-                  Male
-                </label>
-                <label class="mr-4">
-                  <%= f.radio_button :gender, :female, class: 'option-input radio', required: true %>
-                  Female
-                </label>
-                <label class="mr-4">
-                  <%= f.radio_button :gender, :other, class: 'option-input radio', required: true %>
-                  Other
-                </label>
-              </div>
-
-              <div class="mb-3">
-                <div> What is your test result? </div>
-                <label class="mr-4">
-                  <%= f.radio_button :test_result, :positive, class: 'option-input radio', required: true %>
-                  Positive
-                </label>
-                <label class="mr-4">
-                  <%= f.radio_button :test_result, :negative, class: 'option-input radio', required: true %>
-                  Nagative
-                </label>
-                <label class="mr-4">
-                  <%= f.radio_button :test_result, :inconclusive, class: 'option-input radio', required: true %>
-                  Inconclusive
-                </label>
-              </div>
-
-              <div class="text-center">
-                <%= f.submit "Send Test Result", class: 'btn btn-primary'%>
-              </div>
-            <% end %>
-            
-            <%= render "shared/errors" %>
-            <%= render "shared/model_errors", model: @test_result %>
-
+            </div>
+            <!-- Grid column -->
           </div>
-          <!-- News jumbotron -->
-        </div>
-        <!--Grid column-->
+          <!-- Grid row -->
+
+          <div class="mb-3">
+            <div> Select your gender </div>
+            <label class="mr-4">
+              <%= f.radio_button :gender, :male, class: 'option-input radio', required: true %>
+              Male
+            </label>
+            <label class="mr-4">
+              <%= f.radio_button :gender, :female, class: 'option-input radio', required: true %>
+              Female
+            </label>
+            <label class="mr-4">
+              <%= f.radio_button :gender, :other, class: 'option-input radio', required: true %>
+              Other
+            </label>
+          </div>
+
+          <div class="mb-3">
+            <div> What is your test result? </div>
+            <label class="mr-4">
+              <%= f.radio_button :test_result, :positive, class: 'option-input radio', required: true %>
+              Positive
+            </label>
+            <label class="mr-4">
+              <%= f.radio_button :test_result, :negative, class: 'option-input radio', required: true %>
+              Nagative
+            </label>
+            <label class="mr-4">
+              <%= f.radio_button :test_result, :inconclusive, class: 'option-input radio', required: true %>
+              Inconclusive
+            </label>
+          </div>
+
+          <div class="text-center">
+            <%= f.submit "Send Test Result", class: 'btn btn-primary'%>
+          </div>
+        <% end %>
+        
+        <%= render "shared/errors" %>
+        <%= render "shared/model_errors", model: @test_result %>
+
       </div>
-      <!--Grid row-->
+      <!-- News jumbotron -->
     </div>
-    <!-- Content -->
+    <!--Grid column-->
   </div>
-  <!-- Mask & flexbox options-->
+  <!--Grid row-->
 </div>
-<!-- Full Page Intro -->
+<!-- Content -->
 
 <script>
   $( document ).ready(function() {

@@ -14,7 +14,7 @@
  *= require_self
  */
 
- html,
+html,
 body,
 header,
 .view {
@@ -30,11 +30,11 @@ header,
   }
 }
 
-h1 {
+.main-h1 {
   letter-spacing: 8px;
 }
 
-h5 {
+.main-h5 {
   letter-spacing: 3px;
 }
 
