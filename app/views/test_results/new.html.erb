@@ -1,19 +1,23 @@
 <!-- Content -->
-<br><br><br>
+<br><br>
 <div class="container">
   <!--Grid row-->
+  <%= render "shared/errors" %>
+  <%= render "shared/model_errors", model: @test_result %>
+
   <div class="row">
     <!--Grid column-->
     <div class="col-sm-12 col-md-10 col-lg-8 mx-auto">
       <!-- News jumbotron -->
       <div class="jumbotron hoverable p-4">
 
-        <h1 class="text-center">Test Result Details</h1>
+        <h1 class="text-center"> <a href="<%= root_path %>" class="text-dark"><i class="fas fa-home"></i></a> Test Result Details</h1>
 
         <%= form_with(model: @test_result, url: test_results_path, class: 'mx-lg-5', local: true) do |f|%>
           <div class="md-form">
             <%= f.email_field :email, class: 'form-control', required: true %>
             <%= f.label :email %>
+            <small id="email-error" class="form-text text-muted"></small>
           </div>
 
           <div class="md-form">
@@ -93,9 +97,6 @@
           </div>
         <% end %>
         
-        <%= render "shared/errors" %>
-        <%= render "shared/model_errors", model: @test_result %>
-
       </div>
       <!-- News jumbotron -->
     </div>
@@ -107,30 +108,55 @@
 
 <script>
   $( document ).ready(function() {
-      $('#ttn_code, #test_result_email').on('keyup', function () {
-        var ttn_code = $('#ttn_code').val();
-        var email = $('#test_result_email').val();
-        if (!(ttn_code && email)){
-          $("#ttn-code-error").text("");
-          $('#ttn_code')[0].setCustomValidity("Please fill out this field.");
-        }
-        else{
-          $.ajax({
-            type: "get",
-            url: "/test_results/ttn_code",
-            data: { ttn_code: ttn_code, email: email },
-            success: function(response) {
-              if (response.valid){
-                $("#ttn-code-error").addClass("text-success").removeClass("text-danger").text("Entered TTN Code is valid");
-                $('#ttn_code')[0].setCustomValidity("");
-              }
-              else{
-                $("#ttn-code-error").removeClass("text-success").addClass("text-danger").text("TTN Code is not valid or already taken.");
-                $('#ttn_code')[0].setCustomValidity("Enter a valid TTN Code");
-              }
+    $('#ttn_code').on('keyup', function () {
+      var ttn_code = $('#ttn_code').val();
+      if (!ttn_code){
+        $("#ttn-code-error").text("");
+        $('#ttn_code')[0].setCustomValidity("Please fill out this field.");
+      }
+      else{
+        $.ajax({
+          type: "get",
+          url: "/test_results/validate_ttncode",
+          data: { ttn_code: ttn_code },
+          success: function(response) {
+            if (response.valid){
+              $("#ttn-code-error").addClass("text-success").removeClass("text-danger").text(response.message);
+              $('#ttn_code')[0].setCustomValidity("");
             }
-          });
-        }
-      });
+            else{
+              $("#ttn-code-error").removeClass("text-success").addClass("text-danger").text(response.message);
+              $('#ttn_code')[0].setCustomValidity("Enter a valid TTN Code");
+            }
+          }
+        });
+      }
+    });
+
+    $('#test_result_email').on('keyup', function () {
+      var email = $('#test_result_email').val();
+      if (!email){
+        $("#email-error").text("");
+        $('#test_result_email')[0].setCustomValidity("Please fill out this field.");
+      }
+      else{
+        $.ajax({
+          type: "get",
+          url: "/test_results/validate_email",
+          data: { email: email },
+          success: function(response) {
+            if (response.valid){
+              $("#email-error").addClass("text-success").removeClass("text-danger").text(response.message);
+              $('#test_result_email')[0].setCustomValidity("");
+            }
+            else{
+              $("#email-error").removeClass("text-success").addClass("text-danger").text(response.message);
+              $('#test_result_email')[0].setCustomValidity("Enter an valid email");
+            }
+          }
+        });
+      }
+    });
+
   });
 </script>

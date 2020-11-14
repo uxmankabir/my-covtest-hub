@@ -1,15 +1,333 @@
 <!--Main Navigation-->
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary scrolling-navbar">
+<nav class="navbar fixed-top navbar-expand-md navbar-dark primary-color scrolling-navbar">
   <div class="container">
-    <span class="navbar-brand">Dashboard</span>
-    <span class="navbar-text white-text">
-      <%= current_admin.username %>! <%= link_to 'Logout', logout_path, method: :delete, class: 'btn btn-link btn-md text-white ml-auto' %>
-    </span>
+    <span class="navbar-brand"> <a href="<%= root_path %>" class="text-white"><i class="fas fa-home"></i></a> <strong>Dashboard</strong></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#dashboardNavbar"
+      aria-controls="dashboardNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="dashboardNavbar">
+      <ul class="navbar-nav ml-auto nav-flex-icons justify-content-between">
+        <li class="nav-item">
+          <a class="nav-link"><i class="far fa-user"></i> <%= current_admin.username %></a>
+        </li>
+        <li class="nav-item">
+          <%= link_to 'Logout', logout_path, method: :delete, class: 'nav-link' %>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
+
 <!--Main Navigation-->
-<br><br><br><br><br>
+<br><br><br><br>
 <div class="container">
   <%= render 'shared/errors' %>
+
+  <div class="row text-white">
   
+    <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
+      <div class="card danger-color-dark">
+        <div class="card-body">
+          <div class="type-and-count mt-4 text-right">
+            <%= @by_kind['positive'] || 0 %>
+            <br>
+            Positive
+          </div>
+          <div class="gender-count py-2 px-3">
+            Male: <%= @by_gender[['positive','male']] || 0 %>
+            <br>
+            Female: <%= @by_gender[['positive','female']] || 0 %>
+            <br>
+            Other: <%= @by_gender[['positive','other']] || 0 %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3 col-sm-12 col-md-6 col-lg-4">
+      <div class="card success-color-dark">
+        <div class="card-body">
+          <div class="type-and-count mt-4 text-right">
+            <%= @by_kind['negative'] || 0 %>
+            <br>
+            Negative
+          </div>
+          <div class="gender-count py-2 px-3">
+            Male: <%= @by_gender[['negative','male']] || 0 %>
+            <br>
+            Female: <%= @by_gender[['negative','female']] || 0 %>
+            <br>
+            Other: <%= @by_gender[['negative','other']] || 0 %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3 col-sm-12 col-md-12 col-lg-4">
+      <div class="card default-color-dark">
+        <div class="card-body">
+          <div class="type-and-count mt-4 text-right">
+            <%= @by_kind['inconclusive'] || 0 %>
+            <br>
+            Inconclusive
+          </div>
+          <div class="gender-count py-2 px-3">
+            Male: <%= @by_gender[['inconclusive','male']] || 0 %>
+            <br>
+            Female: <%= @by_gender[['inconclusive','female']] || 0 %>
+            <br>
+            Other: <%= @by_gender[['inconclusive','other']] || 0 %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row mb-5 mt-4">
+    <div class="col-sm-12 col-lg-10 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <div class="chart-container" style="position: relative; width:100%">
+              <canvas id="Chart1"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-sm-12 col-lg-10 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <div class="chart-container" style="position: relative; width:100%">
+              <canvas id="Chart2"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-sm-12 col-lg-10 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <div class="chart-container" style="position: relative; width:100%">
+              <canvas id="Chart3"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-5">
+    <div class="col-sm-12 col-lg-10 mx-auto">
+      <div class="card">
+        <div class="card-body">
+          <div class="chart-container" style="position: relative; width:100%">
+              <canvas id="Chart4"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<script>
+
+  function random_number() {
+    return Math.floor(Math.random() * 255);
+  }
+
+  function create_dataset(data, label) {
+    var r = random_number();
+    var g = random_number();
+    var b = random_number();
+    var backgroundColor = 'rgba('+r+', '+g+', '+b+', 0.2)';
+    var borderColor = 'rgba('+r+', '+g+', '+b+', 1)';
+    var dataset = {
+      label: label,
+      data: data,
+      backgroundColor: [...Array(data.length).fill(backgroundColor)],
+      borderColor: [...Array(data.length).fill(borderColor)],
+      borderWidth: 1
+    }
+    return dataset;
+  }
+
+  function create_data() {
+    var labels = [];
+    var datasets = []
+    $.ajax({
+      type: "get",
+      url: "/admins/postcode_data",
+      async: false,
+      success: function(response) {
+        labels = Array.from({length: response.age_limit}, (_, index) => index + 1);
+        response = response.postcode_data;
+        var post_codes = Object.keys(response);
+        post_codes.forEach(post_code => {
+          age_counts = Object.values(response[post_code])
+          datasets.push(create_dataset(age_counts, 'postcode-' + post_code.toString()))
+        });
+      }
+    });
+    return { labels: labels, datasets: datasets};
+  }
+
+  var ctx1 = document.getElementById('Chart1').getContext('2d');
+  var chart1 = new Chart(ctx1, {
+      type: 'bar',
+      data: {
+          labels: ['Male', 'Female', 'Other'],
+          datasets: [{
+              label: 'Positive',
+              data: [
+                "<%= @by_gender[['positive','male']] || 0 %>",
+                "<%= @by_gender[['positive','female']] || 0 %>",
+                "<%= @by_gender[['positive','other']] || 0 %>"
+              ],
+              backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)', 'rgba(255, 99, 132, 0.2)'],
+              borderColor: ['rgba(255, 99, 132, 1)', 'rgba(255, 99, 132, 1)', 'rgba(255, 99, 132, 1)'],
+              borderWidth: 1
+          },
+          {
+              label: 'Negative',
+              data: [
+                "<%= @by_gender[['negative','male']] || 0 %>",
+                "<%= @by_gender[['negative','female']] || 0 %>",
+                "<%= @by_gender[['negative','other']] || 0 %>"
+              ],
+              backgroundColor: ['rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+              borderColor: ['rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)', 'rgba(54, 162, 235, 1)'],
+              borderWidth: 1
+          },
+          {
+              label: 'Inconclusive',
+              data: [
+                "<%= @by_gender[['inconclusive','male']] || 0 %>",
+                "<%= @by_gender[['inconclusive','female']] || 0 %>",
+                "<%= @by_gender[['inconclusive','other']] || 0 %>"
+              ],
+              backgroundColor: ['rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(255, 206, 86, 0.2)'],
+              borderColor: ['rgba(255, 206, 86, 1)', 'rgba(255, 206, 86, 1)', 'rgba(255, 206, 86, 1)'],
+              borderWidth: 1
+          }]
+      },
+      options: {
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true
+            }
+          }]
+        }
+      }
+  });
+
+  var ctx2 = document.getElementById('Chart2').getContext('2d');
+  var Chart2 = new Chart(ctx2, {
+    type: 'line',
+    data: create_data(),
+    options: {
+      title: {
+        display: true,
+        text: 'Positive cases distribution by postcode/age group.'
+      },
+      scales: {
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Age'
+          }
+        }],
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+  function create_data_infection_postcode() {
+    var labels = ['Negative', 'Total'];
+    var datasets = []
+    $.ajax({
+      type: "get",
+      url: "/admins/infection_rate_postcode",
+      async: false,
+      success: function(response) {
+        response = response.postcode_data;
+        var post_codes = Object.keys(response);
+        post_codes.forEach(post_code => {
+          data = Object.values(response[post_code])
+          datasets.push(create_dataset(data, 'postcode-' + post_code.toString()))
+        });
+      }
+    });
+    return { labels: labels, datasets: datasets};
+  }
+
+  var ctx3 = document.getElementById('Chart3').getContext('2d');
+  var Chart3 = new Chart(ctx3, {
+    type: 'bar',
+    data: create_data_infection_postcode(),
+    options: {
+      title: {
+        display: true,
+        text: 'Infection Rate by Post Code'
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+  function create_data_infection_agegroup() {
+    var labels = ['Negative', 'Total'];
+    var datasets = []
+    $.ajax({
+      type: "get",
+      url: "/admins/infection_rate_agegroup",
+      async: false,
+      success: function(response) {
+        response = response.agegroup_data;
+        var ages = Object.keys(response);
+        ages.forEach(age => {
+          data = Object.values(response[age])
+          datasets.push(create_dataset(data, 'age-' + age.toString()))
+        });
+      }
+    });
+    return { labels: labels, datasets: datasets};
+  }
+
+
+  var ctx4 = document.getElementById('Chart4').getContext('2d');
+  var Chart4 = new Chart(ctx4, {
+    type: 'bar',
+    data: create_data_infection_agegroup(),
+    options: {
+      title: {
+        display: true,
+        text: 'Infection Rate by Age Group'
+      },
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+</script>

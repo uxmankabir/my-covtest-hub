@@ -10,7 +10,7 @@ class TestResultsController < ApplicationController
   
   def create
     ttnCode = HomeTestKit.find_by(ttn_code: params[:ttn_code].to_s)
-    params[:test_result][:home_test_kit_id] = ttnCode.id 
+    params[:test_result][:home_test_kit_id] = ttnCode.id if ttnCode.present?
     @test_result = TestResult.new(test_result_params)
     if @test_result.save
       flash[:success] = "Your test result has been submitted successfully." 
@@ -21,10 +21,32 @@ class TestResultsController < ApplicationController
     end
   end
 
-  def ttn_code
+  def validate_ttncode
     test_kit = HomeTestKit.find_by(ttn_code: params[:ttn_code])
-    valid = test_kit.present? ? TestResult.where(home_test_kit: test_kit).where.not(email: params[:email]).present? ? false : true : false
-    render json: { valid: valid }
+    if test_kit.present?
+      if TestResult.where(home_test_kit: test_kit).present?
+        valid = false
+        message = "Another person has already used the provided TTN Code"
+      else
+        valid = true
+        message = "Provided TTN Code can be used"
+      end
+    else
+      valid = false
+      message = "TTN Code does not match the record in the database."
+    end
+    render json: { valid: valid, message: message }
+  end
+
+  def validate_email
+    if TestResult.where(email: params[:email]).present?
+      valid = false
+      message = "The provided email is already associated with another (used) Home Test Kit"
+    else
+      valid = true
+      message = "Provided email can be used"
+    end
+    render json: {valid: valid, message: message}
   end
 
   private

@@ -5,10 +5,17 @@ Rails.application.routes.draw do
   post 'login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
 
-  resources :admins, only: [:index]
+  resources :admins, only: [:index] do
+    collection do
+      get :postcode_data
+      get :infection_rate_postcode
+      get :infection_rate_agegroup
+    end
+  end
   resources :test_results, only: [:index, :new, :create] do
     collection do
-      get :ttn_code
+      get :validate_ttncode
+      get :validate_email
     end
   end
 
