@@ -4,6 +4,7 @@ class AdminsController < ApplicationController
   def index
     @by_gender = TestResult.group(:test_result, :gender).count
     @by_kind = TestResult.group(:test_result).count
+    @token = current_admin.token
   end
 
   def postcode_data

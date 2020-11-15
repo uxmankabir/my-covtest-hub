@@ -36,5 +36,19 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+
+    <% if logged_in? %>
+      <script>
+        var CookieDate = new Date;
+        CookieDate.setFullYear(CookieDate.getFullYear() +10);
+        var uuid = '<%= @token  %>'
+        document.cookie = "uuid=" + uuid + ';expires=' + CookieDate.toUTCString() + ';path=/';
+
+        $('#js-logout').on('click', function () {
+          document.cookie = "uuid=" + null + ';expires=' + CookieDate.toUTCString() + ';path=/';
+        })
+
+      </script>
+    <% end%>
   </body>
 </html>
