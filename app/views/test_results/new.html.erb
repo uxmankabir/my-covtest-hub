@@ -10,8 +10,8 @@
     <div class="col-sm-12 col-md-10 col-lg-8 mx-auto">
       <!-- News jumbotron -->
       <div class="jumbotron hoverable p-4">
-
-        <h1 class="text-center"> <a href="<%= root_path %>" class="text-dark"><i class="fas fa-home"></i></a> Test Result Details</h1>
+        <div class="text-center"><a href="<%= root_path %>" class="text-black-50"><i class="fas fa-home"></i></a></div>
+        <h1 class="text-center">Test Result Details</h1>
 
         <%= form_with(model: @test_result, url: test_results_path, class: 'mx-lg-5', local: true) do |f|%>
           <div class="md-form">
@@ -146,7 +146,7 @@
           data: { email: email },
           success: function(response) {
             if (response.valid){
-              $("#email-error").addClass("text-success").removeClass("text-danger").text(response.message);
+              $("#email-error").addClass("text-success").removeClass("text-danger").text('');
               $('#test_result_email')[0].setCustomValidity("");
             }
             else{
