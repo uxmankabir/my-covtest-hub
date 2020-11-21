@@ -9,14 +9,17 @@ class AdminsController < ApplicationController
 
   def postcode_data
     post_code_data = Hash.new
+    age_limit = max_age_for_positive
     post_codes.each do |post_code|
       ages_data = Hash.new
-      for age in 1..max_age_for_positive
-        ages_data[age] = TestResult.where(test_result: :positive, post_code: post_code, age: age).count
+      if age_limit.present?
+        for age in 1..age_limit
+          ages_data[age] = TestResult.where(test_result: :positive, post_code: post_code, age: age).count
+        end
       end
       post_code_data[post_code] = ages_data
     end
-    render json: {postcode_data: post_code_data, age_limit: max_age_for_positive}
+    render json: {postcode_data: post_code_data, age_limit: age_limit}
   end
 
   def infection_rate_postcode
@@ -32,15 +35,18 @@ class AdminsController < ApplicationController
   
   def infection_rate_agegroup
     age_group_data = Hash.new
-    for age in 1..max_age
-      if TestResult.where(age: age).present?
-        data = Hash.new
-        data[:negative] = TestResult.where(test_result: :negative, age: age).count
-        data[:total] = TestResult.where(age: age).count
-        age_group_data[age] = data
+    age_limit = max_age
+    if age_limit.present?
+      for age in 1..age_limit
+        if TestResult.where(age: age).present?
+          data = Hash.new
+          data[:negative] = TestResult.where(test_result: :negative, age: age).count
+          data[:total] = TestResult.where(age: age).count
+          age_group_data[age] = data
+        end
       end
     end
-    render json: {agegroup_data: age_group_data, age_limit: max_age}
+    render json: {agegroup_data: age_group_data, age_limit: age_limit}
   end
   
   private
