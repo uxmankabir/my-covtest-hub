@@ -4,7 +4,7 @@ The valley of Shangri-La is in lockdown - a deadly virus called ASRS-CoV-3 sprea
 
 Your task is to develop a web application called **MyCoVTest Hub** to help collect the test results and to provide an accorate picture of the local cases, including more detailed demographics, as well as reginal breakdown by postcode.
 
-### Requirements
+## Requirements
 
 In response to the pandemic, all residents in Shangri-La will receieve a Home Test Kit by post. Each pack of the Home Test Kit delivered has a unique Test Tracking Number(TTN). Swab tests that can be easily done at home and anyone tested will get the test result within a few minutes as there is no need to return the test kit to a laboratory for analysis. Anyone completed the test at home will nedd to report the test result via **MyCoVTest Hub** platform.
 
@@ -64,11 +64,13 @@ CCZTQBKW
 ```
 
 **1.2 Admin credentials**
-Username: `admin`
-Password: `12345`
+```
+Username: admin
+Password: 12345
 
-Username: `tester`
-Password: `abcde`
+Username: tester
+Password: abcde
+```
 
 \* Feel free to edit the sample records in **Shangri-La.sql** or make any changes you deem necessary.
 
@@ -81,3 +83,62 @@ You may use any programming language or framework for the implementation, includ
 * Python (e.g. Flask, Django etc.)
 * Ruby On Rails
 * PHP (Laravel)
+
+## Project Setup Guidelined
+
+Before you rub Project, you should check to make sure that your system has the proper prerequisites installed. These include:
+
+* Ruby
+* SQLite3
+* Node.js
+* Yarn
+
+#### Installing Ruby
+Install Ruby Language from this website [Ruby](https://www.ruby-lang.org/en/documentation/installation/).
+If you already have Ruby installed on your computer. You can check inside a terminal by typing:
+
+```
+$ ruby -v
+ruby 2.7.0
+```
+
+**Note:** Make sure you have installed **ruby 2.7.0**
+
+#### Installing SQLite3
+You will also need an installation of the SQLite3 database. Find installation instructions at the [SQLite3 website](https://www.sqlite.org/index.html). Verify that it is correctly installed.
+
+```
+$ sqlite3 --version
+```
+
+The program should report its version.
+
+#### Installing Node.js and Yarn
+
+Finally, you'll need Node.js and Yarn installed to manage your application's JavaScript. Find the installation instructions at the [Node.js website](https://nodejs.org/en/download/) and verify it's installed correctly with the following command:
+
+```
+$ node --version
+```
+
+The version of your Node.js runtime should be printed out. Make sure it's greater than 8.16.0.
+
+To install Yarn, follow the installation instructions at the [Yarn website](https://classic.yarnpkg.com/en/docs/install). Running this command should print out Yarn version:
+
+```
+$ yarn -v
+```
+If it says something like "1.22.0", Yarn has been installed correctly.
+
+#### Installing Rails
+To install Rails, use the gem install command provided by RubyGems:
+
+```
+$ gem install rails
+```
+To verify that you have everything installed correctly, you should be able to run the following:
+
+```
+$ rails --version
+```
+If it says something like "Rails 6.0.0", you are ready to continue.
