@@ -84,7 +84,7 @@ You may use any programming language or framework for the implementation, includ
 * Ruby On Rails
 * PHP (Laravel)
 
-## Project Setup Guidelined
+## Project Setup Guidelines
 
 Before you rub Project, you should check to make sure that your system has the proper prerequisites installed. These include:
 
@@ -142,3 +142,53 @@ To verify that you have everything installed correctly, you should be able to ru
 $ rails --version
 ```
 If it says something like "Rails 6.0.0", you are ready to continue.
+
+
+## How to Run the Project?
+
+After installing the above prerequisites, switch to project folder folder by typing on terminal:
+
+```
+$ cd my-covtest-hub
+```
+
+#### Running a Migration
+Run the following commands on the terminal in the `my-covtest-hub` directory:
+
+```
+$ rails db:create
+$ rails db:migrate
+```
+
+#### Adding records to the database
+The console command lets you interact with database of your Rails application from the command line.
+Run the following command to open rails console.
+
+```
+$ rails console
+```
+
+Create a new Admin by running following query on rails console interface.
+
+```
+Admin.create(username: 'admin', password: '12345')
+```
+
+Create a new HomeTestKit by running following query on rails console interface.
+
+```
+HomeTestKit.create(ttn_code: 'MM2874Z6')
+```
+
+#### Starting up the Web Server
+You actually have a functional Rails application already. To see it, you need to start a web server on your development machine. You can do this by running the following in the `my-covtest-hub` directory:
+
+```
+$ rails server
+```
+
+Then open your browser and goto following url to see the application:
+
+```
+http://localhost:3000/
+```
